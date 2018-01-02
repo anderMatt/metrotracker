@@ -3,6 +3,7 @@ package metrotracker.api;
 import metrotracker.WmataApiException;
 import metrotracker.utli.JsonResponseReader;
 
+import java.io.IOException;
 import java.util.logging.Logger;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -35,16 +36,47 @@ public class WmataApi {
             conn.setRequestMethod("GET");
             conn.setRequestProperty("api_key", apiKey);
 
-            String response;
-            //TODO: check response code for better err. message, eg. key expired.
-            try(InputStream is = conn.getInputStream()) {
-                response = JsonResponseReader.readJsonFromResponse(is);
-            }
-            return response;
+            String responseBody = "";
+            int responseCode = conn.getResponseCode();
 
-        } catch (Exception e) {
-            log.warning("Exception while making API call: " + e.toString());
+            if(responseCode >= 400 ){
+                responseBody = readErrorResponseBody(conn);
+            }
+            else {
+                responseBody = readSuccessfulResponseBody(conn);
+            }
+
+            log.info("Got response body from WMATA API: " + responseBody);
+            return responseBody;
+
+        } catch (IOException e) {
+            log.warning("Exception while making WMATA API call: " + e.toString());
             throw new WmataApiException(e);
         }
+    }
+
+    private static String readSuccessfulResponseBody(HttpURLConnection conn) throws IOException {
+        String responseBody = "";
+        try(InputStream is = conn.getInputStream()) {
+           responseBody = JsonResponseReader.readJsonFromResponse(is);
+        }
+        return responseBody;
+    }
+
+    private static String readErrorResponseBody(HttpURLConnection conn) throws IOException {
+        String responseBody = "";
+
+        try(InputStream es = conn.getErrorStream()) {
+            responseBody = JsonResponseReader.readJsonFromResponse(es);
+        }
+
+        int responseCode = conn.getResponseCode();
+        switch(responseCode) {
+            case 401:  //TODO: other codes
+                log.warning("Make sure the API key " + AppProperties.getConfiguration(AppProperties.Configuration.WMATA_API_KEY) + " is valid.");
+                break;
+            default: break;
+        }
+        return responseBody;
     }
 }
