@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+import metrotracker.api.WmataApi;
 import metrotracker.WmataApiException;
 
 @WebServlet(urlPatterns = {"/api/bus/positions"})  //{routeId}
@@ -14,11 +15,10 @@ public class BusPositionApi extends HttpServlet{
     public void doGet(HttpServletRequest req, HttpServletResponse res) throws IOException {
         String routeId = req.getParameter("routeId");
         //TODO: handle no param
-        WmataApi api = (WmataApi) getServletContext().getAttribute("wmataApi");
         String busPositionsJson;
 
         try {
-            busPositionsJson = api.getBusPositions(routeId);
+            busPositionsJson = WmataApi.getBusPositions(routeId);
             res.setContentType("application/json");
             PrintWriter writer = res.getWriter();
             writer.write(busPositionsJson);

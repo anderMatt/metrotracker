@@ -8,33 +8,35 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import metrotracker.AppProperties;
+
 
 public class WmataApi {
     private static final Logger log = Logger.getLogger(WmataApi.class.getName());
-    private String apiKey;
 
-    public WmataApi(String apiKey) {
-        if(apiKey == null || "".equals(apiKey)) {
-            throw new RuntimeException("A WMATA Api key must be provided.");
-        }
-        this.apiKey = apiKey;
-    }
+    public WmataApi() { }
 
-    public String getBusPositions(String routeId) throws WmataApiException {
+    public static String getBusPositions(String routeId) throws WmataApiException {
         String endpointUrl = WmataApiEndpoints.BUS_POSITIONS + "?routeId=" + routeId;
         return makeApiCall(endpointUrl);
     }
 
-    private String makeApiCall(String endpoint) throws WmataApiException  {
+    private static String makeApiCall(String endpoint) throws WmataApiException  {
+        String apiKey = AppProperties.getConfiguration(AppProperties.Configuration.WMATA_API_KEY);
+        if("".equals(apiKey)) {
+            log.warning("No API key was retrieved from configurations!");
+        }
         log.info("Making API call to endpoint " + endpoint);
+        log.info("Using API key: " + apiKey);
 
-        try{
+        try {
             URL url = new URL(endpoint);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
-            conn.setRequestProperty("api_key", this.apiKey);
+            conn.setRequestProperty("api_key", apiKey);
 
             String response;
+            //TODO: check response code for better err. message, eg. key expired.
             try(InputStream is = conn.getInputStream()) {
                 response = JsonResponseReader.readJsonFromResponse(is);
             }
