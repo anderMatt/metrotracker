@@ -7,53 +7,44 @@ import java.util.logging.Logger;
 
 public class AppProperties {
     private static final Logger log = Logger.getLogger(AppProperties.class.getName());
-    private static Properties props = new Properties();
+    public enum Configuration {
+        WMATA_API_KEY("wmata.api.key", "Key for authenticating to WMATA's REST API.");
 
-    public enum Configuration  {
-            WMATA_API_KEY("wmata.api.key", "Key for authenticating to WMATA's REST API");
+        public String getKey() {
+            return key;
+        }
 
-            String key;
-            String description;
-            public String getKey() {
-                return key;
-            }
-            public String getDescription() {
-                return description;
-            }
+        public String getValue() {
+            return value;
+        }
 
-            public String toString() {
-                return getKey() + " : " + getDescription();
-            }
+        public String toString() {
+            return key + ": " + value;
+        }
 
-            Configuration(String key, String description) {
-                this.key = key;
-                this.description = description;
+        private String key;
+        private String value;
+
+        Configuration(String key, String value) {
+            this.key = key;
+            this.value = value;
         }
     }
 
-    protected static void loadProperties(InputStream is) throws IOException {
-        props.load(is);
-    }
-
-//    public static List<String> checkRequiredPropertiesLoaded() {
-//        List<String> missingProperties = new ArrayList<>();
-//        for(RequiredProperties required: RequiredProperties.values()) {
-//            if(props.getProperty(required.getKey()) == null ){
-//                missingProperties.add(required.toString());
-//            }
-//        }
-//        return missingProperties;
-//    }
-
+    private static Properties props = new Properties();
     public static Properties getProperties() {
         return props;
     }
 
-    public static String getProperty(String propertyName) {
-        return props.get(propertyName).toString();
+    public static void loadProperties(InputStream is) throws IOException {
+        props.load(is);
     }
 
-    public static String getProperty(Configuration property) {
-        return props.get(property.getKey()).toString();
+    public static String getConfiguration(Configuration conf) {
+        return getConfiguration(conf.getKey());
+    }
+
+    public static String getConfiguration(String confName) {
+        return props.get(confName) == null ? "" : props.get(confName).toString();
     }
 }
