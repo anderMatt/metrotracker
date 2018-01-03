@@ -1,18 +1,19 @@
 package metrotracker.model;
 
+import com.google.gson.Gson;
+import com.google.gson.annotations.Expose;
+import metrotracker.JsonSerializable;
 import metrotracker.model.BusPosition;
 
-public class BusPositions {
-    private BusPosition[] busPositions;
+public class BusPositions implements JsonSerializable {
+
+    @Expose
+    private BusPosition[] BusPositions;
 
     public BusPositions() {}
 
-    public void setBusPositions(BusPosition[] busPositions) {
-        this.busPositions = busPositions;
+    @Override
+    public String toJson() {
+        return new Gson().toJson(this);
     }
-
-    public BusPosition[] getBusPositions() {
-        return busPositions;
-    }
-
 }

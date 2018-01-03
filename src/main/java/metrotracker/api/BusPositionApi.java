@@ -9,6 +9,7 @@ import java.util.logging.Logger;
 
 import metrotracker.api.WmataApi;
 import metrotracker.WmataApiException;
+import metrotracker.model.BusPositions;
 
 @WebServlet(urlPatterns = {"/api/bus/positions"})  //{routeId}
 public class BusPositionApi extends HttpServlet{
@@ -18,21 +19,22 @@ public class BusPositionApi extends HttpServlet{
     public void doGet(HttpServletRequest req, HttpServletResponse res) throws IOException {
         String routeId = req.getParameter("routeId");
         //TODO: handle no param
-        String busPositionsJson = "";
+        BusPositions busPositions;
+        String clientResponseBody;
 
         try {
-            busPositionsJson = WmataApi.getBusPositions(routeId);
-            busPositionsJson = formatClientResponse(busPositionsJson);
+            busPositions = WmataApi.getBusPositions(routeId);
+            clientResponseBody = formatClientResponse(busPositions);
         } catch(WmataApiException e) {
-             busPositionsJson = formatClientErrResponse("Sorry, unable to retrieve bus positions");
+            clientResponseBody = formatClientErrResponse("Sorry, unable to retrieve bus positions");
         }
         res.setContentType("application/json");
         PrintWriter writer = res.getWriter();
-        writer.write(busPositionsJson);
+        writer.write(clientResponseBody);
     }
 
-    private String formatClientResponse(String responseData) {
-        return "{data: " + responseData + "}";
+    private String formatClientResponse(BusPositions positions) {
+        return "{data: " + positions.toJson() + "}";
     }
 
     private String formatClientErrResponse(String errMsg) {

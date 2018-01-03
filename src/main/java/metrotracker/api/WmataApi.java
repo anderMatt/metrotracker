@@ -1,7 +1,9 @@
 package metrotracker.api;
 
 import metrotracker.WmataApiException;
-import metrotracker.utli.JsonResponseReader;
+import metrotracker.model.BusPositions;
+import metrotracker.utli.BusPositionsMapper;
+import metrotracker.utli.ApiResponseUtil;
 
 import java.io.IOException;
 import java.util.logging.Logger;
@@ -17,9 +19,10 @@ public class WmataApi {
 
     public WmataApi() { }
 
-    public static String getBusPositions(String routeId) throws WmataApiException {
+    public static BusPositions getBusPositions(String routeId) throws WmataApiException {
         String endpointUrl = WmataApiEndpoints.BUS_POSITIONS + "?routeId=" + routeId;
-        return makeApiCall(endpointUrl);
+        String apiResponseBody = makeApiCall(endpointUrl);
+        return BusPositionsMapper.fromJson(apiResponseBody);
     }
 
     private static String makeApiCall(String endpoint) throws WmataApiException  {
@@ -30,35 +33,42 @@ public class WmataApi {
         log.info("Making API call to endpoint " + endpoint);
         log.info("Using API key: " + apiKey);
 
+        HttpURLConnection conn = null;
+        String responseBody = "";
+
         try {
             URL url = new URL(endpoint);
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
             conn.setRequestProperty("api_key", apiKey);
 
-            String responseBody = "";
             int responseCode = conn.getResponseCode();
 
-            if(responseCode >= 400 ){
+            if(ApiResponseUtil.isErrorResponseCode(responseCode)){
                 responseBody = readErrorResponseBody(conn);
             }
             else {
                 responseBody = readSuccessfulResponseBody(conn);
             }
 
-            log.info("Got response body from WMATA API: " + responseBody);
             return responseBody;
 
         } catch (IOException e) {
             log.warning("Exception while making WMATA API call: " + e.toString());
             throw new WmataApiException(e);
         }
+        finally {
+            if(conn != null) {
+                conn.disconnect();
+            }
+        }
     }
 
     private static String readSuccessfulResponseBody(HttpURLConnection conn) throws IOException {
         String responseBody = "";
+
         try(InputStream is = conn.getInputStream()) {
-           responseBody = JsonResponseReader.readJsonFromResponse(is);
+           responseBody = ApiResponseUtil.readJsonFromResponseStream(is);
         }
         return responseBody;
     }
@@ -67,9 +77,10 @@ public class WmataApi {
         String responseBody = "";
 
         try(InputStream es = conn.getErrorStream()) {
-            responseBody = JsonResponseReader.readJsonFromResponse(es);
+            responseBody = ApiResponseUtil.readJsonFromResponseStream(es);
         }
 
+        //Log hints.
         int responseCode = conn.getResponseCode();
         switch(responseCode) {
             case 401:  //TODO: other codes

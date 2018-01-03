@@ -5,9 +5,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-public class JsonResponseReader {
+public class ApiResponseUtil {
 
-    public static String readJsonFromResponse(InputStream is) throws IOException {
+    public static String readJsonFromResponseStream(InputStream is) throws IOException {
         StringBuilder body = new StringBuilder();
         BufferedReader br = new BufferedReader(new InputStreamReader(is));
         String line;
@@ -15,5 +15,9 @@ public class JsonResponseReader {
             body.append(line);
         }
         return body.toString();
+    }
+
+    public static boolean isErrorResponseCode(int responseCode) {
+        return responseCode >= 400;
     }
 }
