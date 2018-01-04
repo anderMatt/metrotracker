@@ -5,6 +5,7 @@ import { HttpClientModule} from "@angular/common/http";
 
 import { AppComponent } from './app.component';
 import { BusPositionsService } from "./shared/bus-positions.service";
+import { BusColorService } from "./shared/bus-color.service";
 
 
 @NgModule({
@@ -15,7 +16,10 @@ import { BusPositionsService } from "./shared/bus-positions.service";
     BrowserModule,
     HttpClientModule
   ],
-  providers: [BusPositionsService],
+  providers: [
+    BusPositionsService,
+    BusColorService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
