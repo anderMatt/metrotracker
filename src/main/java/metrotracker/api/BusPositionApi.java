@@ -20,14 +20,17 @@ public class BusPositionApi extends HttpServlet{
         //TODO: handle no param
         BusPositions busPositions;
         String clientResponseBody;
+        int statusCode = 200;
 
         try {
             busPositions = WmataApi.getBusPositions(routeId);
             clientResponseBody = busPositions.toJson();
         } catch(WmataApiException e) {
             clientResponseBody = formatClientErrResponse("Sorry, unable to retrieve bus positions");
+            statusCode = 403;
         }
         res.setContentType("application/json");
+        res.setStatus(statusCode);
         PrintWriter writer = res.getWriter();
         writer.write(clientResponseBody);
     }
