@@ -7,7 +7,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.logging.Logger;
 
-import metrotracker.api.WmataApi;
 import metrotracker.WmataApiException;
 import metrotracker.model.BusPositions;
 
@@ -24,7 +23,7 @@ public class BusPositionApi extends HttpServlet{
 
         try {
             busPositions = WmataApi.getBusPositions(routeId);
-            clientResponseBody = formatClientResponse(busPositions);
+            clientResponseBody = busPositions.toJson();
         } catch(WmataApiException e) {
             clientResponseBody = formatClientErrResponse("Sorry, unable to retrieve bus positions");
         }
@@ -33,12 +32,7 @@ public class BusPositionApi extends HttpServlet{
         writer.write(clientResponseBody);
     }
 
-    private String formatClientResponse(BusPositions positions) {
-        return "{data: " + positions.toJson() + "}";
-    }
-
     private String formatClientErrResponse(String errMsg) {
         return "{error: " + errMsg + "}";
     }
-
 }

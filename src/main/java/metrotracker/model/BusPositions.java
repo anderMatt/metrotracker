@@ -14,6 +14,6 @@ public class BusPositions implements JsonSerializable {
 
     @Override
     public String toJson() {
-        return new Gson().toJson(this);
+        return new Gson().toJson(this.BusPositions);
     }
 }
