@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import {BusPositionsService} from "./shared/bus-positions.service";
 
 @Component({
   selector: 'app-root',
@@ -6,5 +7,11 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'app';
+
+  constructor(private busPositionsService: BusPositionsService) {}
+
+  testApiCall() {
+    console.log('testing api call...');
+    this.busPositionsService.loadBusPositions("D2");
+  }
 }
