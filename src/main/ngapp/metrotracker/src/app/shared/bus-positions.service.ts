@@ -13,7 +13,7 @@ export class BusPositionsService {
 
   private currentRouteId: string;
   private _busPositionsSource: BehaviorSubject<BusPosition[]> = new BehaviorSubject([]);
-  public busPositions$: Observable<BusPosition[]> = this._busPositionsSource.asObservable().distinctUntilChanged().share();
+  public busPositions$: Observable<BusPosition[]> = this._busPositionsSource.asObservable().share();
 
   constructor(private httpClient: HttpClient) { }
 

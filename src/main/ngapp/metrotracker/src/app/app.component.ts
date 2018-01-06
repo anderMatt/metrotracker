@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 import {BusPositionsService} from "./shared/bus-positions.service";
 
 @Component({
@@ -10,8 +10,7 @@ export class AppComponent {
 
   constructor(private busPositionsService: BusPositionsService) {}
 
-  testApiCall() {
-    console.log('testing api call...');
-    this.busPositionsService.loadBusPositions("D2");
+  onRouteSelected(routeId: string) {
+    this.busPositionsService.loadBusPositions(routeId);
   }
 }

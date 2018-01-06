@@ -1,1 +1,12 @@
-<button (click)="testApiCall()">Test Api Call</button>
+<div class="container">
+  <div class="row justify-content-center">
+      <app-bus-route-select (routeSelected)="onRouteSelected($event)"></app-bus-route-select>
+  </div>
+
+  <div class="row">
+    <div class="col mt-3 mt-sm-1">
+      <app-bus-map></app-bus-map>
+    </div>
+  </div>
+</div>
+
