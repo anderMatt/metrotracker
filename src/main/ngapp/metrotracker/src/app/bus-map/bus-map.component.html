@@ -1,0 +1,26 @@
+<div class="row">
+  <div class="col">
+    <app-bus-map-legend [busPositions]="busPositions"></app-bus-map-legend>
+  </div>
+</div>
+
+  <!-- the map -->
+<div class="map-container">
+
+  <agm-map
+  [zoom]="mapConfig.zoom"
+  [latitude]="mapConfig.lat"
+  [longitude]="mapConfig.lng"
+  [disableDefaultUI]="false"
+  [minZoom]="11"
+  [scrollwheel]="true">
+
+  <agm-marker
+    *ngFor="let p of busPositions"
+    [latitude]="p.lat"
+    [longitude]="p.lon"
+    [iconUrl]="getBusIcon(p.tripHeadsign)">
+  </agm-marker>
+
+  </agm-map>
+</div>

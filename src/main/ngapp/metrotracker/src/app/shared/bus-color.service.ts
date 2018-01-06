@@ -4,8 +4,8 @@ import {BusPosition} from "./BusPosition";
 
 @Injectable()
 export class BusColorService {
-  private busIcons: string[] = [];
-  private busLegendColors: string[] = ["green", "orange"];
+  private busIcons: string[] = ["assets/bus-01.png", "assets/bus-02.png", "assets/bus-03.png"];
+  private busLegendColors: string[] = ["#590A30", "#EF6125", "#90AA3C"];
   private routeHeadsigns: string[] = [];
 
   constructor(private busPositionsService: BusPositionsService) {
@@ -16,14 +16,24 @@ export class BusColorService {
   }
 
   public getHeadsignLegendColor(tripHeadsign: string): string {
+    //TODO: text color also. {bgc:'', tc: ''}
     const headsignIndex = this.routeHeadsigns.indexOf(tripHeadsign);
     if(headsignIndex === -1 || headsignIndex >= this.busLegendColors.length) {
       return "";
     }
-    return this.busLegendColors[this.routeHeadsigns.indexOf(tripHeadsign)];
+    return this.busLegendColors[headsignIndex];
   }
 
-  //Returns array of all bus destinations. Sorted in ABC order.
+  public getBusIconUrl(tripHeadsign: string): string {
+    const headsignIndex = this.routeHeadsigns.indexOf(tripHeadsign);
+    if(headsignIndex === -1 || headsignIndex >= this.busIcons.length) {
+      return "";
+    }
+    return this.busIcons[headsignIndex];
+  }
+
+  //Returns array of all bus destinations. Sorted in ABC order so that colors
+  // are consistent across requests.
   private extractTripHeadsigns(busPositions: BusPosition[]): string[] {
     const headSigns = new Set();
     busPositions.forEach((p: BusPosition) => {

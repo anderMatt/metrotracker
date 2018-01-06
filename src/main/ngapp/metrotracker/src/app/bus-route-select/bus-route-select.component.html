@@ -1,0 +1,7 @@
+<div class="select-wrapper card">
+  <label for="busRoute" class="sr-only"></label>
+  <select [formControl]="routeControl" name="busRoute" id="busRoute" class="form-control">
+    <option [selected]="true" [value]="" [disabled]="true">Select a Route...</option>
+    <option *ngFor="let route of busRoutes" [value]="route">{{route}}</option>
+  </select>
+</div>

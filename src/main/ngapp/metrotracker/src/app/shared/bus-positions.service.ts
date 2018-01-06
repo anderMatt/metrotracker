@@ -41,8 +41,8 @@ export class BusPositionsService {
   private doJsonStringTypeConversion(positionsJson: BusPosition[]): BusPosition[] {
     return positionsJson.map((p: BusPosition) => {
       p.dateTime = new Date(p.dateTime);
-      p.lat = parseInt(<string><any> p.lat);
-      p.lon = parseInt(<string><any> p.lon);
+      p.lat = parseFloat(<string><any> p.lat);
+      p.lon = parseFloat(<string><any> p.lon);
       return p;
     });
   }
