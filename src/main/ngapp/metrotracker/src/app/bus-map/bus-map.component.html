@@ -20,6 +20,11 @@
     [latitude]="p.lat"
     [longitude]="p.lon"
     [iconUrl]="getBusIcon(p.tripHeadsign)">
+
+    <agm-info-window>
+      <app-bus-map-infowindow [busPosition]="p"></app-bus-map-infowindow>
+    </agm-info-window>
+
   </agm-marker>
 
   </agm-map>

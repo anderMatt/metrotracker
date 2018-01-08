@@ -1,0 +1,5 @@
+<div>
+  Scheduled Arrival Time: {{busPosition.dateTime | date:'shortTime' }} <br />
+  <span [ngClass]="isBehindSchedule() ? 'late' : 'on-time'">{{getScheduleStatusMessage()}}</span> <br />
+  Last updated: {{busPosition.dateTime | date:'mediumTime'}}
+</div>

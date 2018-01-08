@@ -40,6 +40,7 @@ export class BusPositionsService {
   //Map json response to correct types. TODO: better way?
   private doJsonStringTypeConversion(positionsJson: BusPosition[]): BusPosition[] {
     return positionsJson.map((p: BusPosition) => {
+      p.Deviation = parseInt(<string><any>p.Deviation);
       p.dateTime = new Date(p.dateTime);
       p.lat = parseFloat(<string><any> p.lat);
       p.lon = parseFloat(<string><any> p.lon);

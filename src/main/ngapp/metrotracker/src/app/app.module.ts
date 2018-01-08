@@ -10,6 +10,7 @@ import { BusColorService } from "./shared/bus-color.service";
 import { BusRouteSelectComponent } from './bus-route-select/bus-route-select.component';
 import { BusMapComponent } from './bus-map/bus-map.component';
 import { BusMapLegendComponent } from './bus-map/bus-map-legend/bus-map-legend.component';
+import { BusMapInfowindowComponent } from './bus-map/bus-map-infowindow/bus-map-infowindow.component';
 
 import {MAP_CONFIG, MapInitConfig} from './app.config';
 
@@ -19,7 +20,8 @@ import {MAP_CONFIG, MapInitConfig} from './app.config';
     AppComponent,
     BusRouteSelectComponent,
     BusMapComponent,
-    BusMapLegendComponent
+    BusMapLegendComponent,
+    BusMapInfowindowComponent
   ],
   imports: [
     BrowserModule,
