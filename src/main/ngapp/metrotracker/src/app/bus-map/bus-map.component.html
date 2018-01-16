@@ -5,7 +5,13 @@
 </div>
 
   <!-- the map -->
-<div class="map-container">
+<div class="map-container justify-content-center">
+
+  <div *ngIf="busPositionsService.isLoading$ | async" class="loading-overlay d-flex flex-column align-items-center justify-content-center">
+    <div>
+      <img src="assets/spinner.svg"/>
+    </div>
+  </div>
 
   <agm-map
   [zoom]="mapConfig.zoom"

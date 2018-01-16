@@ -13,7 +13,17 @@ import {BusColorService} from "../shared/bus-color.service";
         height: 600px;
       }
     .map-container {
+      position: relative;
       border: 1px solid black;
+    }
+    .loading-overlay {
+      position: absolute;
+      z-index: 999;
+      height: 100%;
+      width: 100%;
+      top: 0;
+      left: 0;
+      background-color: rgba(60,60,60,0.6);
     }`
   ]
 })
@@ -21,7 +31,7 @@ export class BusMapComponent implements OnInit {
   busPositions: BusPosition[];
 
  constructor (
-   private busPositionsService: BusPositionsService,
+   public busPositionsService: BusPositionsService,
    @Inject(MAP_CONFIG) public mapConfig: MapConfiguration,
    private busColorService: BusColorService) { }
 
