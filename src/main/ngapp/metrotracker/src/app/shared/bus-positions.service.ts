@@ -20,17 +20,19 @@ export class BusPositionsService {
   constructor(private httpClient: HttpClient) { }
 
   loadBusPositions(routeId: string) {
-    //TODO: backend action flag for indicators.
-    const apiUrl = "/api/bus/positions?routeId=" + routeId; //TODO: inject token? https://stackoverflow.com/questions/37265275/how-to-implement-class-constants-in-typescript
-    this.onBackendStart();
+    this.onUserTriggeredBackendAction();
+    this.getBusPositions(routeId);
+  }
 
+  private getBusPositions(routeId: string) {
+    const apiUrl = "/api/bus/positions?routeId=" + routeId; //TODO: inject token? https://stackoverflow.com/questions/37265275/how-to-implement-class-constants-in-typescript
     this.httpClient.get<BusPosition[]>(apiUrl)
       .map((pos: BusPosition[]) => this.doJsonStringTypeConversion(pos))
       .finally(() => this.onBackendActionCompleted())
       .subscribe( (positions: BusPosition[]) => {
-        this.currentRouteId = routeId;
-        this._busPositionsSource.next(positions);
-      },
+          this.currentRouteId = routeId;
+          this._busPositionsSource.next(positions);
+        },
         (err: any) => console.log('Got http sub err: ' + err));  //TODO: err handler
   }
 
@@ -38,7 +40,7 @@ export class BusPositionsService {
     if(!this.currentRouteId) {
       return;
     }
-    this.loadBusPositions(this.currentRouteId);
+    this.getBusPositions(this.currentRouteId);
   }
 
   //Map json response to correct types. TODO: better way?
@@ -52,7 +54,7 @@ export class BusPositionsService {
     });
   }
 
-  private onBackendStart() {
+  private onUserTriggeredBackendAction() {
     this.isLoading$.next(true);
   }
 
