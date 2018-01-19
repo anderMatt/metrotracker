@@ -1,11 +1,11 @@
 <div class="row">
-  <div class="col">
-    <app-bus-map-legend [busPositions]="busPositions"></app-bus-map-legend>
+  <div class="col mt-1">
+    <app-bus-map-legend [busPositions]="busPositions" [lastUpdated]="lastUpdated"></app-bus-map-legend>
   </div>
 </div>
 
   <!-- the map -->
-<div class="map-container justify-content-center">
+<div class="map-container justify-content-center mt-2">
 
   <div *ngIf="busPositionsService.isLoading$ | async" class="loading-overlay d-flex flex-column align-items-center justify-content-center">
     <div>

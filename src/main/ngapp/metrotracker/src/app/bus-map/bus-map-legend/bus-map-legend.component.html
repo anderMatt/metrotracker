@@ -1,9 +1,14 @@
-<ul class="row justify-content-center">
-  <li *ngFor="let headsign of tripHeadsigns; let i = index"
-      [ngClass]="{'mt-2': i>=2}"
-      [ngStyle]="{backgroundColor: getHeadsignLabelColor(headsign)}"
-      class="list-group-item col-sm-6 text-center rounded">
-    {{headsign}}
-  </li>
-  <!--<li class="list-group-item col-sm-6 text-center">Extra Route</li>-->
-</ul>
+<div *ngIf="tripHeadsigns" class="row no-gutters text-center">
+    <ul *ngIf="tripHeadsigns.length > 0" class="col">
+      <li *ngFor="let headsign of tripHeadsigns; let i = index"
+          [ngStyle]="{backgroundColor: getHeadsignLabelColor(headsign)}"
+          class="list-group-item rounded">
+        {{headsign}}
+      </li>
+    </ul>
+    <div class="col bus-count">
+      <p>{{getBusCountString()}}</p>
+      <p>Last updated: {{lastUpdated | date:'mediumTime'}}</p>
+    </div>
+</div>
+

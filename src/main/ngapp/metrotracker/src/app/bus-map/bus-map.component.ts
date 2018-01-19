@@ -29,6 +29,7 @@ import {BusColorService} from "../shared/bus-color.service";
 })
 export class BusMapComponent implements OnInit {
   busPositions: BusPosition[];
+  lastUpdated: Date = null;
 
  constructor (
    public busPositionsService: BusPositionsService,
@@ -36,11 +37,10 @@ export class BusMapComponent implements OnInit {
    private busColorService: BusColorService) { }
 
   ngOnInit() {
-   console.log("Inside busmap ngOnInit");
    this.busPositionsService.busPositions$
      .subscribe((bp: BusPosition[]) => {
      this.busPositions = bp;
-     console.log("BusMap bp set to: " + JSON.stringify(this.busPositions));
+     this.lastUpdated = new Date();
      });
   }
 
