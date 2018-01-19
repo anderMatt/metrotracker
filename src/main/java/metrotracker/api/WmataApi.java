@@ -2,6 +2,7 @@ package metrotracker.api;
 
 import metrotracker.WmataApiException;
 import metrotracker.model.BusPositions;
+import metrotracker.model.BusRoutes;
 import metrotracker.utli.BusPositionsMapper;
 import metrotracker.utli.ApiResponseUtil;
 
@@ -12,6 +13,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 import metrotracker.AppProperties;
+import metrotracker.utli.BusRoutesMapper;
 
 
 public class WmataApi {
@@ -23,6 +25,12 @@ public class WmataApi {
         String endpointUrl = WmataApiEndpoints.BUS_POSITIONS + "?routeId=" + routeId;
         String apiResponseBody = makeApiCall(endpointUrl);
         return BusPositionsMapper.fromJson(apiResponseBody);
+    }
+
+    public static BusRoutes getBusRoutes() throws WmataApiException {
+        String endpointUrl = WmataApiEndpoints.BUS_ROUTES;
+        String apiResponseBody = makeApiCall(endpointUrl);
+        return BusRoutesMapper.fromJson(apiResponseBody);
     }
 
     private static String makeApiCall(String endpoint) throws WmataApiException  {
