@@ -1,12 +1,12 @@
 <div *ngIf="tripHeadsigns" class="row no-gutters text-center">
-    <ul *ngIf="tripHeadsigns.length > 0" class="col">
+    <ul *ngIf="tripHeadsigns.length > 0" class="col-sm-6">
       <li *ngFor="let headsign of tripHeadsigns; let i = index"
           [ngStyle]="{backgroundColor: getHeadsignLabelColor(headsign)}"
           class="list-group-item rounded">
         {{headsign}}
       </li>
     </ul>
-    <div class="col bus-count">
+    <div class="col-sm-6 d-none d-sm-block bus-count">
       <p>{{getBusCountString()}}</p>
       <p>Last updated: {{lastUpdated | date:'mediumTime'}}</p>
     </div>
