@@ -11,8 +11,8 @@ import metrotracker.WmataApiException;
 import metrotracker.model.BusPositions;
 
 @WebServlet(urlPatterns = {"/api/bus/positions"})  //{routeId}
-public class BusPositionApi extends HttpServlet{
-    private static final Logger log = Logger.getLogger(BusPositionApi.class.getName());
+public class BusPositionsApi extends HttpServlet{
+    private static final Logger log = Logger.getLogger(BusPositionsApi.class.getName());
 
     @Override
     public void doGet(HttpServletRequest req, HttpServletResponse res) throws IOException {
