@@ -1,7 +1,13 @@
-<div class="select-wrapper card">
-  <label for="busRoute" class="sr-only"></label>
-  <select [formControl]="routeControl" name="busRoute" id="busRoute" class="form-control">
+<div *ngIf="busRoutes.length; else loading" class="select-wrapper card">
+    <label for="busRoute" class="sr-only"></label>
+    <select [formControl]="routeControl" name="busRoute" id="busRoute" class="form-control">
     <option [selected]="true" [value]="" [disabled]="true">Select a Route...</option>
-    <option *ngFor="let route of busRoutes" [value]="route">{{route}}</option>
-  </select>
+    <option *ngFor="let route of busRoutes" [value]="route.RouteID">{{route.Name}}</option>
+    </select>
 </div>
+
+<ng-template #loading class="loading">
+  <img width="35px" height="35px" src="/assets/spinner.svg">
+</ng-template>
+
+
